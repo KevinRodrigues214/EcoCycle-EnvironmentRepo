@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,29 +21,55 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok) {
-  localStorage.setItem("token", data.token);
-  if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
-  window.location.href = "/home";
-} else {
+        // Save token and user
+        localStorage.setItem("token", data.token);
+        if (data.user) localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Redirect based on role using navigate
+        const role = data.user.role;
+        if (role === "operational") {
+          navigate("/operational-home");
+        } else if (role === "community") {
+          if (data.user.status === "approved") {
+            navigate("/community-home");
+          } else {
+            setMessage("Your account is pending approval.");
+          }
+        } else {
+          // regular user
+          navigate("/home");
+        }
+      } else {
         setMessage(data.message || "Login failed.");
       }
     } catch (err) {
       setMessage("Server connection error.");
+      console.error(err);
     }
   };
 
   return (
     <div className="auth-container">
-      <img src="/logo.png" className="logo" />
+      <img src="/logo.png" className="logo" alt="logo" />
 
       <h2>Welcome Back</h2>
 
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" value={email}
-          onChange={(e) => setEmail(e.target.value)} required />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-        <input type="password" placeholder="Password" value={password}
-          onChange={(e) => setPassword(e.target.value)} required />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
 
         <button type="submit">Sign In</button>
       </form>
