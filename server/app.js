@@ -186,6 +186,34 @@ app.patch('/api/users/reject/:id', async (req, res) => {
   }
 });
 
+//create events
+app.get('/api/events', async (req, res) => {
+  if (!eventsCollection) {
+    return res.status(500).json({ error: 'Database not ready' });
+  }
+  try {
+    const events = await eventsCollection.find().toArray();
+    res.json(events);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch events' });
+  }
+});
+
+// POST create event
+app.post('/api/events', async (req, res) => {
+  if (!eventsCollection) {
+    return res.status(500).json({ error: 'Database not ready' });
+  }
+  try {
+    const result = await eventsCollection.insertOne(req.body);
+    res.status(201).json({ message: 'Event created', id: result.insertedId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to create event' });
+  }
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`🚀 Server running on http://localhost:${port}`);

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CreateEvents from "./CreateEvents";
 
 // Dummy components for each tab
 function Events() {
@@ -59,7 +60,7 @@ export default function CommunityHome() {
 
       {/* Tab content */}
       <div className="tab-content">
-        {activeTab === "events" && <Events />}
+        {activeTab === "events" && <CreateEvents />}
         {activeTab === "rewards" && <Rewards />}
         {activeTab === "help" && <Help />}
       </div>
