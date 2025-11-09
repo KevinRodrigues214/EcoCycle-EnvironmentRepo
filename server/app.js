@@ -48,8 +48,6 @@ app.post('/api/auth/register', async (req, res) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-
-    // ✅ HERE: use 'pending' not 'pending_approval'
     const status = role === "community" ? "pending" : "active";
 
     const newUser = {
@@ -99,7 +97,7 @@ app.post('/api/auth/login',
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      // ✅ Block pending or rejected community users
+      // Block pending or rejected community users
       if (user.role === "community" && user.status !== "active") {
         return res.status(403).json({
           message:
@@ -133,7 +131,7 @@ app.post('/api/auth/login',
   }
 );
 
-// ✅ GET ALL PENDING COMMUNITY USERS
+// GET ALL PENDING COMMUNITY USERS
 app.get('/api/users/pending', async (req, res) => {
   try {
     const pendingUsers = await usersCollection.find({ role: 'community', status: 'pending' }).toArray();
@@ -144,7 +142,7 @@ app.get('/api/users/pending', async (req, res) => {
   }
 });
 
-// ✅ APPROVE COMMUNITY USER
+// APPROVE COMMUNITY USER
 app.patch('/api/users/approve/:id', async (req, res) => {
   const userId = req.params.id;
 
@@ -165,7 +163,7 @@ app.patch('/api/users/approve/:id', async (req, res) => {
   }
 });
 
-// ✅ REJECT COMMUNITY USER
+// REJECT COMMUNITY USER
 app.patch('/api/users/reject/:id', async (req, res) => {
   const userId = req.params.id;
 
@@ -213,6 +211,55 @@ app.post('/api/events', async (req, res) => {
     res.status(500).json({ error: 'Failed to create event' });
   }
 });
+
+// GET all rewards
+app.get("/api/rewards", async (req, res) => {
+  if (!rewardsCollection) {
+    return res.status(500).json({ error: "Database not ready" });
+  }
+
+  try {
+    const rewards = await rewardsCollection.find().toArray();
+    res.json(rewards);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch rewards" });
+  }
+});
+
+// POST create reward or coupon
+app.post("/api/rewards", async (req, res) => {
+  if (!rewardsCollection) {
+    return res.status(500).json({ error: "Database not ready" });
+  }
+
+  try {
+    const { name, description, pointsRequired, couponCode, storeName } = req.body;
+
+    if (!name || !description || !pointsRequired) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const newReward = {
+      name,
+      description,
+      pointsRequired: Number(pointsRequired),
+      couponCode: couponCode || null,
+      storeName: storeName || null,
+      createdAt: new Date(),
+    };
+
+    const result = await rewardsCollection.insertOne(newReward);
+
+    res
+      .status(201)
+      .json({ message: "Reward created successfully", id: result.insertedId });
+  } catch (err) {
+    console.error("❌ Error creating reward:", err);
+    res.status(500).json({ error: "Failed to create reward" });
+  }
+});
+
 
 // Start server
 app.listen(port, () => {

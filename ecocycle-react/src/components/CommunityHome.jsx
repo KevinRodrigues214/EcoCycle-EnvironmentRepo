@@ -1,24 +1,6 @@
 import { useState } from "react";
 import CreateEvents from "./CreateEvents";
-
-// Dummy components for each tab
-function Events() {
-  return (
-    <div>
-      <h3>Events</h3>
-      <p>List of upcoming community events will be displayed here.</p>
-    </div>
-  );
-}
-
-function Rewards() {
-  return (
-    <div>
-      <h3>Rewards</h3>
-      <p>View your earned points and available rewards here.</p>
-    </div>
-  );
-}
+import CreateRewards from "./CreateRewards";
 
 function Help() {
   return (
@@ -61,7 +43,7 @@ export default function CommunityHome() {
       {/* Tab content */}
       <div className="tab-content">
         {activeTab === "events" && <CreateEvents />}
-        {activeTab === "rewards" && <Rewards />}
+        {activeTab === "rewards" && <CreateRewards />}
         {activeTab === "help" && <Help />}
       </div>
 
