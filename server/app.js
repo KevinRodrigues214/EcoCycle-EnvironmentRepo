@@ -21,7 +21,12 @@ app.use(cors({
   credentials: true
 }));
 
-let challengesCollection, eventsCollection, recycleStationsCollection, rewardsCollection, usersCollection;
+let challengesCollection,
+  eventsCollection,
+  recycleStationsCollection,
+  rewardsCollection,
+  usersCollection,
+  pickupRequestsCollection;
 
 // Connect to MongoDB
 client.connect().then(() => {
@@ -33,6 +38,7 @@ client.connect().then(() => {
   recycleStationsCollection = db.collection("RecycleStations");
   rewardsCollection = db.collection("Rewards");
   usersCollection = db.collection("Users");
+  pickupRequestsCollection = db.collection("PickupRequests");
 }).catch((err) => {
   console.error("MongoDB connection error:", err);
 });
@@ -260,6 +266,101 @@ app.post("/api/rewards", async (req, res) => {
   }
 });
 
+// 🔹 NEW: GET all weekly challenges
+app.get("/api/challenges", async (req, res) => {
+  if (!challengesCollection) {
+    return res.status(500).json({ error: "Database not ready" });
+  }
+
+  try {
+    const challenges = await challengesCollection.find().toArray();
+    res.json(challenges);
+  } catch (err) {
+    console.error("Error fetching challenges:", err);
+    res.status(500).json({ error: "Failed to fetch challenges" });
+  }
+});
+
+// GET all recycling stations
+app.get("/api/recycle-stations", async (req, res) => {
+  if (!recycleStationsCollection) {
+    return res.status(500).json({ error: "Database not ready" });
+  }
+
+  try {
+    const stations = await recycleStationsCollection.find().toArray();
+    res.json(stations);
+  } catch (err) {
+    console.error("Error fetching recycle stations:", err);
+    res.status(500).json({ error: "Failed to fetch recycle stations" });
+  }
+});
+
+// GET user's pick-up requests
+app.get("/api/pickup-requests", async (req, res) => {
+  if (!pickupRequestsCollection) {
+    return res.status(500).json({ error: "Database not ready" });
+  }
+
+  const { userId, email } = req.query;
+  const filter = {};
+  if (userId) filter.userId = userId;
+  if (email) filter.email = email;
+
+  try {
+    const requests = await pickupRequestsCollection
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .toArray();
+    res.json(requests);
+  } catch (err) {
+    console.error("Error fetching pickup requests:", err);
+    res.status(500).json({ error: "Failed to fetch pickup requests" });
+  }
+});
+
+// POST new pick-up request
+app.post("/api/pickup-requests", async (req, res) => {
+  if (!pickupRequestsCollection) {
+    return res.status(500).json({ error: "Database not ready" });
+  }
+
+  try {
+    const {
+      userId,
+      name,
+      email,
+      address,
+      preferredDate,
+      preferredTime,
+      itemsDescription,
+    } = req.body;
+
+    if (!name || !email || !address || !itemsDescription) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const doc = {
+      userId: userId || null,
+      name,
+      email,
+      address,
+      preferredDate: preferredDate || null,
+      preferredTime: preferredTime || null,
+      itemsDescription,
+      status: "pending",
+      createdAt: new Date(),
+    };
+
+    const result = await pickupRequestsCollection.insertOne(doc);
+    res
+      .status(201)
+      .json({ message: "Pick-up request submitted", id: result.insertedId });
+  } catch (err) {
+    console.error("Error creating pickup request:", err);
+    res.status(500).json({ error: "Failed to create pick-up request" });
+  }
+});
 
 // Start server
 app.listen(port, () => {

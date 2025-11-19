@@ -73,10 +73,12 @@ body {
   cursor: pointer;
   font-weight: 500;
 }
+
 .user-name {
   margin-right: 12px; 
   font-weight: 500;
 }
+
 .logout-btn {
   background: #dc4949;
   color: white;
@@ -89,4 +91,616 @@ body {
 .home-content {
   text-align: center;
   margin-top: 4rem;
+}
+
+/* Main container for user home sections */
+.home-main {
+  width: 100%;
+  margin: 0 0 3rem;
+  padding: 0 3rem 3rem;   /* spacing from browser edges */
+  box-sizing: border-box;
+}
+
+/* ===== Shared section style: Weekly, Events, Rewards ===== */
+
+.weekly-section,
+.events-section,
+.rewards-section,
+.recycle-section 
+.photo-section {
+  width: 100%;
+  margin: 2rem 0 3rem;
+  padding: 1.5rem 2rem;
+  background: #fefefe;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+.photo-section {
+  width: 100%;
+  margin: 2rem 0 3rem;
+  padding: 1.5rem 2rem;
+  background: #fefefe;             /* white card */
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+/* ===== Weekly Challenges section ===== */
+
+.weekly-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.weekly-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.weekly-subtitle {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.challenges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.challenge-card {
+  background: #f9fafb;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.challenge-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.challenge-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dcfce7;
+  font-size: 1.1rem;
+}
+
+.challenge-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.challenge-points {
+  font-size: 0.85rem;
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.challenge-description {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.challenge-meta-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+}
+
+.challenge-tag {
+  font-size: 0.8rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.challenge-btn {
+  margin-top: 0.6rem;
+  align-self: flex-start;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: none;
+  background: #16a34a;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.challenge-btn:hover {
+  filter: brightness(0.95);
+}
+
+.error-text {
+  color: #b91c1c;
+}
+
+/* ===== Events section (user) ===== */
+
+.events-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.events-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.events-subtitle {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.event-card {
+  background: #f9fafb;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.event-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.event-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dbeafe;
+  font-size: 1.1rem;
+}
+
+.event-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.event-location {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.event-description {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.event-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.event-tag {
+  font-size: 0.8rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.event-points {
+  font-size: 0.85rem;
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.event-btn {
+  margin-top: 0.6rem;
+  align-self: flex-start;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.event-btn:hover {
+  filter: brightness(0.95);
+}
+
+/* ===== Rewards section (user) ===== */
+
+.rewards-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.rewards-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.rewards-subtitle {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.reward-card {
+  background: #f9fafb;
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.reward-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.reward-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fef3c7;
+  font-size: 1.1rem;
+}
+
+.reward-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.reward-store {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.reward-description {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.reward-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.25rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.reward-tag {
+  font-size: 0.8rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.reward-code {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #16a34a;
+  background: #ecfdf5;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+}
+
+.reward-btn {
+  margin-top: 0.6rem;
+  align-self: flex-start;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: none;
+  background: #f97316;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.reward-btn:hover {
+  filter: brightness(0.95);
+}
+
+/* ===== Recycling Map layout ===== */
+
+.recycle-layout {
+  margin-top: 0.75rem;   /* space above the map area */
+}
+
+.recycle-map {
+  width: 100%;
+  height: 420px;         /* big map height */
+  border-radius: 14px;
+  overflow: hidden;
+  background: #e5e7eb;   /* grey while map loads */
+}
+
+.recycle-map iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* taller map for full page */
+.recycle-map-full {
+  height: 520px;
+}
+
+/* ===== Photo / AI Recognition ===== */
+
+.photo-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.photo-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.photo-subtitle {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.photo-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.photo-upload {
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.photo-upload-box {
+  position: relative;
+  border-radius: 14px;
+  border: 1px dashed #a7f3d0;
+  background: #ecfdf5;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.photo-upload-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-upload-box input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.photo-upload-placeholder {
+  font-size: 0.9rem;
+  color: #4b5563;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.photo-analyze-btn {
+  align-self: flex-start;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.photo-analyze-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.photo-result {
+  flex: 1 1 260px;
+}
+
+.photo-result-card {
+  background: #f9fafb;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  padding: 1rem 1.1rem;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 160px;
+}
+
+.photo-result-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #166534;
+}
+
+.photo-confidence {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.photo-note {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.4rem;
+}
+
+.photo-result-empty {
+  justify-content: center;
+}
+
+/* ===== Pick-up Requests ===== */
+
+.pickup-section {
+  width: 100%;
+  margin: 2rem 0 3rem;
+  padding: 1.5rem 2rem;
+  background: #fefefe;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+}
+
+.pickup-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pickup-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.pickup-subtitle {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.pickup-main-btn {
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: none;
+  background: #16a34a;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.pickup-main-btn:disabled {
+  opacity: 0.7;
+}
+
+.pickup-form {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pickup-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.pickup-form-field label {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  color: #374151;
+}
+
+.pickup-form-field input,
+.pickup-form-field textarea {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 0.45rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.pickup-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pickup-list-item {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pickup-list-line {
+  font-size: 0.85rem;
+}
+
+.pickup-status {
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.pickup-list-items {
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.success-text {
+  color: #15803d;
+  font-size: 0.85rem;
 }
