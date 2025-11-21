@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,27 +22,29 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok) {
-        // Save token and user
+        
         localStorage.setItem("token", data.token);
         if (data.user) {
           localStorage.setItem("user", JSON.stringify(data.user));
-          console.log("🟣 User saved:", data.user);
         }
 
-        // Redirect based on role + status
+        
+        window.dispatchEvent(new Event("authChanged"));
+
+      
         if (data.user.role === "operational") {
-          window.location.href = "/operational-home";
+          navigate("/operational-home");
         } 
         else if (data.user.role === "community") {
           if (data.user.status === "active") {
-            window.location.href = "/community-home";
+            navigate("/community-home");
           } else {
             setMessage("Your account is pending approval.");
             return;
           }
         } 
         else {
-          window.location.href = "/home";
+          navigate("/home");
         }
 
       } else {

@@ -1,7 +1,8 @@
+// src/components/UserPickupRequests.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function UserPickupRequests() {
+export default function UserPickupRequests({ showViewAll = true }) {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -33,12 +34,21 @@ export default function UserPickupRequests() {
             Schedule a pick-up when you have a lot of recyclables ready.
           </p>
         </div>
-        <button
-          className="pickup-main-btn"
-          onClick={() => navigate("/pickup-requests")}
-        >
-          New pick-up
-        </button>
+
+        <div className="section-header-actions">
+          {/* DASHBOARD ONLY */}
+          {showViewAll && (
+            <button
+              type="button"
+              className="section-link"
+              onClick={() => navigate("/pickup-requests")}
+            >
+              View all
+            </button>
+          )}
+
+          {/* ALWAYS SHOW "NEW PICK-UP" */}
+        </div>
       </div>
 
       {loading ? (

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function UserEvents() {
+function UserEvents({ showViewAll = false }) {      // ⬅️ accept prop
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadEvents() {
@@ -39,6 +41,17 @@ function UserEvents() {
             Join local clean-ups and recycling activities in your community.
           </p>
         </div>
+
+        {/* ⬇️ Only show on dashboard (when showViewAll = true) */}
+        {showViewAll && (
+          <button
+            type="button"
+            className="section-link-btn"
+            onClick={() => navigate("/events")}
+          >
+            View all
+          </button>
+        )}
       </div>
 
       {events.length === 0 && <p>No events available right now.</p>}
@@ -61,9 +74,7 @@ function UserEvents() {
                 {e.eventDate} • {e.eventTime}
               </span>
               {e.eventPoints && (
-                <span className="event-points">
-                  +{e.eventPoints} pts
-                </span>
+                <span className="event-points">+{e.eventPoints} pts</span>
               )}
             </div>
 

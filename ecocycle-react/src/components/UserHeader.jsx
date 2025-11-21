@@ -1,19 +1,53 @@
-import React from "react";
+
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 
 export default function UserHeader() {
   const navigate = useNavigate();
+  const [user, setUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  });
 
-  let user = null;
-  try {
-    user = JSON.parse(localStorage.getItem("user"));
-  } catch {
-    user = null;
-  }
+  useEffect(() => {
+    const syncUser = () => {
+      try {
+        setUser(JSON.parse(localStorage.getItem("user")));
+      } catch {
+        setUser(null);
+      }
+    };
+
+    
+    const onStorage = (e) => {
+      if (e.key === "user" || e.key === "token") syncUser();
+    };
+
+    
+    const onAuthChanged = () => syncUser();
+
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("authChanged", onAuthChanged);
+
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener("authChanged", onAuthChanged);
+    };
+  }, []);
 
   const handleLogout = () => {
+    
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
+   
+    window.dispatchEvent(new Event("authChanged"));
+
+    
     navigate("/login");
   };
 
@@ -29,8 +63,8 @@ export default function UserHeader() {
         <a onClick={() => navigate("/events")}>Events</a>
         <a onClick={() => navigate("/rewards")}>Rewards</a>
         <a onClick={() => navigate("/recycling-map")}>Map</a>
-        <a onClick={() => navigate("/photo-ai")}>Photo AI</a>  
-          <a onClick={() => navigate("/pickup-requests")}>Pick-ups</a>
+        <a onClick={() => navigate("/photo-ai")}>Photo AI</a>
+        <a onClick={() => navigate("/pickup-requests")}>Pick-ups</a>
       </nav>
 
       <div className="header-right">

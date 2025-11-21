@@ -1,35 +1,22 @@
-// src/components/UserChallenges.jsx
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function UserChallenges() {
+export default function UserChallenges({ showViewAll = true }) {
   const [challenges, setChallenges] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function loadChallenges() {
-      try {
-        setLoading(true);
-        setError("");
-
-        const res = await fetch("http://localhost:5000/api/challenges");
-        if (!res.ok) throw new Error("Failed to load challenges");
-
-        const data = await res.json();
-        setChallenges(data);
-      } catch (err) {
+    fetch("http://localhost:5000/api/challenges")
+      .then((res) => res.json())
+      .then((data) => setChallenges(data || []))
+      .catch((err) => {
         console.error(err);
         setError("Could not load challenges.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadChallenges();
+      });
   }, []);
 
-  if (loading) return <div className="weekly-section">Loading challenges...</div>;
-  if (error) return <div className="weekly-section error-text">{error}</div>;
+  const visible = challenges.slice(0, 2); // what shows on dashboard
 
   return (
     <section className="weekly-section">
@@ -40,35 +27,45 @@ function UserChallenges() {
             Complete eco-tasks this week and earn points for rewards.
           </p>
         </div>
+
+        {/* 👇 only show this on dashboard when showViewAll = true */}
+        {showViewAll && (
+          <button
+            type="button"
+            className="section-link"
+            onClick={() => navigate("/challenges")}
+          >
+            View all
+          </button>
+        )}
       </div>
 
-      {challenges.length === 0 && <p>No challenges available right now.</p>}
+      {error && <p className="error-text">{error}</p>}
 
       <div className="challenges-grid">
-        {challenges.map((c) => (
-          <article key={c._id} className="challenge-card">
+        {visible.map((ch) => (
+          <article key={ch._id} className="challenge-card">
             <div className="challenge-card-header">
               <div className="challenge-icon">♻️</div>
               <div>
-                <h3 className="challenge-name">{c.name}</h3>
-                <p className="challenge-points">{c.reward_points} points</p>
+                <div className="challenge-name">{ch.name}</div>
+                <div className="challenge-points">
+                  {ch.reward_points} points
+                </div>
               </div>
             </div>
-
-            <p className="challenge-description">{c.description}</p>
-
+            <p className="challenge-description">{ch.description}</p>
             <div className="challenge-meta-row">
               <span className="challenge-tag">
-                Duration: {c.duration_days} days
+                Duration: {ch.duration_days} days
               </span>
             </div>
-
-            <button className="challenge-btn">Join challenge</button>
+            <button className="challenge-btn" type="button">
+              Join challenge
+            </button>
           </article>
         ))}
       </div>
     </section>
   );
 }
-
-export default UserChallenges;

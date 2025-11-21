@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function UserRecyclingMap({ fullPage = false }) {
+function UserRecyclingMap({ fullPage = false, showViewAll = false }) {
   const [stations, setStations] = useState([]);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadStations() {
@@ -65,6 +67,16 @@ function UserRecyclingMap({ fullPage = false }) {
               Find nearby recycling stations you can use for drop-offs.
             </p>
           </div>
+
+          {showViewAll && (
+            <button
+              type="button"
+              className="section-link-btn"
+              onClick={() => navigate("/recycling-map")}
+            >
+              Open map page
+            </button>
+          )}
         </div>
       )}
 

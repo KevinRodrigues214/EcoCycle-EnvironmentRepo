@@ -19,13 +19,12 @@ export default function Home() {
 
       {/* Dashboard shows an overview of everything */}
       <main className="home-main">
-        <UserChallenges />
-        <UserEvents />
-        <UserRewards />
-        <UserPhotoAI /> 
-        <UserPickupRequests />
-        {/* dashboard = preview version (no prop) */}
-        <UserRecyclingMap />
+        <UserChallenges showViewAll={true} />
+        <UserEvents showViewAll={true} />
+        <UserRewards showViewAll={true} />
+        <UserPhotoAI fullPage={false} />
+        <UserPickupRequests showViewAll={true} />
+        <UserRecyclingMap showViewAll={true} />
       </main>
     </div>
   );

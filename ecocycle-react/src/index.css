@@ -704,3 +704,149 @@ body {
   color: #15803d;
   font-size: 0.85rem;
 }
+.section-link {
+  background: transparent;
+  border-radius: 999px;
+  border: 1px solid #16a34a;
+  padding: 0.25rem 0.9rem;
+  font-size: 0.8rem;
+  color: #16a34a;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s;
+}
+
+.section-link:hover {
+  background: #dcfce7;
+  color: #14532d;
+  box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);
+}
+
+.pickup-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Small 'View all' / link-style buttons in section headers */
+.section-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* subtle pill button for 'View all' */
+.section-link-btn {
+  background: transparent;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 0.25rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.section-link-btn:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+  color: #111827;
+  transform: translateY(-1px);
+}
+
+/* ===== Recycling map section (user) ===== */
+
+.map-section {
+  max-width: 1100px;
+  margin: 0 auto 3rem;
+  padding: 1.5rem 2rem 2rem;
+  background: #fefefe;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+}
+
+/* generic section header (can also be reused in other sections later) */
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.section-subtitle {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+/* you already have .section-link-btn for all "View all" type buttons */
+
+/* map iframe wrapper */
+.map-frame-wrapper {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+/* compact preview (dashboard) */
+.map-frame-wrapper--compact .map-frame {
+  height: 260px;
+}
+
+.map-frame {
+  width: 100%;
+  height: 380px;  /* full page height */
+  border: 0;
+}
+
+/* === Recycling Map section (dashboard) === */
+
+.recycle-section {
+  max-width: 2100px;
+  margin: 0 auto 3rem;
+  padding: 1.5rem 2rem;
+  background: #fefefe;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+}
+
+.recycle-header-row {
+  display: flex;
+  justify-content: space-between;   /* text on left, button on right */
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.recycle-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.recycle-subtitle {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+/* reuse same style as other "View all" buttons */
+.section-link-btn {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #16a34a;
+  background: white;
+  color: #15803d;
+  cursor: pointer;
+}
+.section-link-btn:hover {
+  background: #ecfdf5;
+}

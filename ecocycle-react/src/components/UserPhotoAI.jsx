@@ -1,138 +1,106 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function UserPhotoAI({ fullPage = false }) {
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState("");
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState("");
+export default function UserPhotoAI({ fullPage = false }) {
+  const [imagePreview, setImagePreview] = useState(null);
+  const [result, setResult] = useState("");
+  const [confidence, setConfidence] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleFileChange = (e) => {
-    const f = e.target.files[0];
-    if (!f) return;
+  const handleFileChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-    setFile(f);
-    setPreview(URL.createObjectURL(f));
-    setResult(null);
-    setError("");
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+      setResult("");
+      setConfidence("");
+    };
+    reader.readAsDataURL(file);
   };
 
-  const analyze = () => {
-    if (!file) {
-      setError("Please upload a photo first.");
-      return;
-    }
-
-    setError("");
+  const handleAnalyze = () => {
+    if (!imagePreview) return;
     setLoading(true);
 
-    // Fake "AI" – just uses file name keywords
+    // Fake AI result
     setTimeout(() => {
-      const name = file.name.toLowerCase();
-
-      let category = "Other / Unsure";
-      let advice =
-        "Check local guidelines or ask staff at the recycling depot.";
-
-      if (name.includes("bottle") || name.includes("plastic")) {
-        category = "Plastic (likely recyclable)";
-        advice = "Rinse the bottle and place it in the plastics/containers bin.";
-      } else if (name.includes("can") || name.includes("metal")) {
-        category = "Metal (recyclable)";
-        advice = "Empty and rinse the can before recycling.";
-      } else if (name.includes("paper") || name.includes("cardboard")) {
-        category = "Paper / Cardboard (recyclable)";
-        advice =
-          "Remove tape or stickers and flatten boxes where possible.";
-      } else if (
-        name.includes("food") ||
-        name.includes("banana") ||
-        name.includes("apple")
-      ) {
-        category = "Food waste (compost)";
-        advice = "Place this item in the green/organic waste bin.";
-      }
-
-      setResult({
-        category,
-        confidence: "Mock AI confidence: 82%",
-        advice,
-      });
-
+      const fakeResult =
+        "This looks like a plastic container. Place it in your recycling bin if your city accepts #1–#7 plastics.";
+      const fakeConfidence = "Confidence: ~82% (demo only)";
+      setResult(fakeResult);
+      setConfidence(fakeConfidence);
       setLoading(false);
-    }, 700);
+    }, 900);
   };
 
   return (
     <section className="photo-section">
-      {/* Show mini title only on dashboard, not full page */}
-      {!fullPage && (
-        <div className="photo-header-row">
-          <div>
-            <h2 className="photo-title">Photo / AI Recognition</h2>
-            <p className="photo-subtitle">
-              Upload a picture of an item to get a suggestion on how to dispose
-              of it.
-            </p>
-          </div>
+      <div className="photo-header-row">
+        <div>
+          <h2 className="photo-title">Photo / AI Recognition</h2>
+          <p className="photo-subtitle">
+            Upload a picture of an item to get a suggestion on how to dispose of
+            it.
+          </p>
         </div>
-      )}
+        {!fullPage && (
+          <button
+            type="button"
+            className="section-link"
+            onClick={() => navigate("/photo-ai")}
+          >
+            Open page
+          </button>
+        )}
+      </div>
 
       <div className="photo-layout">
         <div className="photo-upload">
           <div className="photo-upload-box">
-            {preview ? (
-              <img src={preview} alt="Preview" />
+            {imagePreview ? (
+              <img src={imagePreview} alt="Uploaded preview" />
             ) : (
-              <span className="photo-upload-placeholder">
+              <div className="photo-upload-placeholder">
                 Drop an image here or click to browse
-              </span>
+              </div>
             )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-            />
+            <input type="file" accept="image/*" onChange={handleFileChange} />
           </div>
 
           <button
+            type="button"
             className="photo-analyze-btn"
-            onClick={analyze}
-            disabled={loading}
+            onClick={handleAnalyze}
+            disabled={!imagePreview || loading}
           >
             {loading ? "Analyzing..." : "Analyze item"}
           </button>
-
-          {error && (
-            <p className="error-text" style={{ marginTop: "0.5rem" }}>
-              {error}
-            </p>
-          )}
         </div>
 
         <div className="photo-result">
-          {result ? (
-            <div className="photo-result-card">
-              <h3>{result.category}</h3>
-              <p className="photo-confidence">{result.confidence}</p>
-              <p>{result.advice}</p>
-              <p className="photo-note">
-                *This is a demo AI suggestion only. Always follow your city’s
-                official recycling rules.
-              </p>
-            </div>
-          ) : (
-            <div className="photo-result-card photo-result-empty">
-              <p>
+          <div className="photo-result-card">
+            <h3>Result</h3>
+            {result ? (
+              <>
+                <p>{result}</p>
+                <p className="photo-confidence">{confidence}</p>
+                <p className="photo-note">
+                  This is a demo suggestion only. Always follow your city&apos;s
+                  official recycling guidelines.
+                </p>
+              </>
+            ) : (
+              <p className="photo-note photo-result-empty">
                 Upload a photo and click <strong>“Analyze item”</strong> to see
                 a suggestion.
               </p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
-export default UserPhotoAI;

@@ -1,34 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function UserRewards() {
+export default function UserRewards({ showViewAll = true }) {
   const [rewards, setRewards] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function loadRewards() {
-      try {
-        setLoading(true);
-        setError("");
-
-        const res = await fetch("http://localhost:5000/api/rewards");
-        if (!res.ok) throw new Error("Failed to load rewards");
-
-        const data = await res.json();
-        setRewards(data);
-      } catch (err) {
+    fetch("http://localhost:5000/api/rewards")
+      .then((res) => res.json())
+      .then((data) => setRewards(data || []))
+      .catch((err) => {
         console.error(err);
         setError("Could not load rewards.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadRewards();
+      });
   }, []);
 
-  if (loading) return <div className="rewards-section">Loading rewards...</div>;
-  if (error) return <div className="rewards-section error-text">{error}</div>;
+  // on dashboard show only first reward
+  const visible = rewards.slice(0, 1);
 
   return (
     <section className="rewards-section">
@@ -39,18 +28,29 @@ function UserRewards() {
             See what you can earn with your EcoPoints.
           </p>
         </div>
+
+        {/* only show on dashboard */}
+        {showViewAll && (
+          <button
+            type="button"
+            className="section-link"
+            onClick={() => navigate("/rewards")}
+          >
+            View all
+          </button>
+        )}
       </div>
 
-      {rewards.length === 0 && <p>No rewards available yet.</p>}
+      {error && <p className="error-text">{error}</p>}
 
       <div className="rewards-grid">
-        {rewards.map((r) => (
+        {visible.map((r) => (
           <article key={r._id} className="reward-card">
             <div className="reward-card-header">
-              <div className="reward-icon">🏆</div>
+              <div className="reward-icon">🏅</div>
               <div>
-                <h3 className="reward-name">{r.name}</h3>
-                <p className="reward-store">{r.storeName}</p>
+                <div className="reward-name">{r.name}</div>
+                <div className="reward-store">{r.storeName}</div>
               </div>
             </div>
 
@@ -60,17 +60,18 @@ function UserRewards() {
               <span className="reward-tag">
                 Requires {r.pointsRequired} points
               </span>
+
               {r.couponCode && (
                 <span className="reward-code">Code: {r.couponCode}</span>
               )}
             </div>
 
-            <button className="reward-btn">Redeem (coming soon)</button>
+            <button className="reward-btn" type="button">
+              Redeem (coming soon)
+            </button>
           </article>
         ))}
       </div>
     </section>
   );
 }
-
-export default UserRewards;

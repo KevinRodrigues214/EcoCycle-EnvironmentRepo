@@ -13,7 +13,7 @@ export default function ChallengesPage() {
       </div>
 
       <main className="home-main">
-        <UserChallenges />
+        <UserChallenges showViewAll={false} />
       </main>
     </div>
   );

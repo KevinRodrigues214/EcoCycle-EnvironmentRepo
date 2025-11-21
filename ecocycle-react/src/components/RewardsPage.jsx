@@ -1,4 +1,3 @@
-import React from "react";
 import UserHeader from "./UserHeader";
 import UserRewards from "./UserRewards";
 
@@ -9,11 +8,11 @@ export default function RewardsPage() {
 
       <div className="home-content">
         <h1>Rewards & Points</h1>
-        <p>Browse all rewards you can redeem with EcoPoints.</p>
+        <p>Browse all rewards you can unlock with EcoPoints.</p>
       </div>
 
       <main className="home-main">
-        <UserRewards />
+        <UserRewards showViewAll={false} />
       </main>
     </div>
   );
